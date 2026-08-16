@@ -154,13 +154,18 @@ TEST(TrackPublishOptionsTest, DegradationPreferenceRoundTrip) {
 
 TEST(TrackPublishOptionsTest, PreEncodedVideoBackendRoundTrip) {
   TrackPublishOptions options;
+  options.video_codec = VideoCodec::H264;
   options.video_encoder = VideoEncoderBackend::PreEncoded;
 
   const proto::TrackPublishOptions proto_options = toProto(options);
+  ASSERT_TRUE(proto_options.has_video_codec());
+  EXPECT_EQ(proto_options.video_codec(), proto::VideoCodec::H264);
   ASSERT_TRUE(proto_options.has_video_encoder());
   EXPECT_EQ(proto_options.video_encoder(), proto::VideoEncoderBackend::ENCODER_BACKEND_PRE_ENCODED);
 
   const TrackPublishOptions round_trip = fromProto(proto_options);
+  ASSERT_TRUE(round_trip.video_codec.has_value());
+  EXPECT_EQ(*round_trip.video_codec, VideoCodec::H264);
   ASSERT_TRUE(round_trip.video_encoder.has_value());
   EXPECT_EQ(*round_trip.video_encoder, VideoEncoderBackend::PreEncoded);
 }
