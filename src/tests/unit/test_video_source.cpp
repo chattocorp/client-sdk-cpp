@@ -15,6 +15,7 @@
  */
 
 #include <gtest/gtest.h>
+#include <livekit/encoded_video_source.h>
 #include <livekit/livekit.h>
 #include <livekit/video_source.h>
 
@@ -38,6 +39,25 @@ TEST_F(VideoSourceTest, VideoCaptureOptionsDefaults) {
   EXPECT_EQ(options.timestamp_us, 0);
   EXPECT_EQ(options.rotation, VideoRotation::VIDEO_ROTATION_0);
   EXPECT_FALSE(options.metadata.has_value());
+}
+
+TEST_F(VideoSourceTest, ConstructEncodedSourceAndReadEmptyFeedback) {
+  EncodedVideoSource source(1920, 1080);
+  EXPECT_EQ(source.width(), 1920);
+  EXPECT_EQ(source.height(), 1080);
+  EXPECT_NE(source.ffiHandleId(), 0u);
+
+  const EncodedVideoSourceFeedback feedback = source.takeFeedback();
+  EXPECT_FALSE(feedback.keyframe_requested);
+  EXPECT_FALSE(feedback.rate_control.has_value());
+}
+
+TEST_F(VideoSourceTest, EncodedSourceRejectsEmptyPayloadBeforeFfi) {
+  EncodedVideoSource source(1920, 1080);
+  EncodedVideoFrame frame;
+  frame.width = 1920;
+  frame.height = 1080;
+  EXPECT_THROW((void)source.captureFrame(frame), std::invalid_argument);
 }
 
 } // namespace livekit::test

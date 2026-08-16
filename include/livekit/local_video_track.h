@@ -30,6 +30,7 @@ class OwnedTrack;
 }
 
 class VideoSource;
+class EncodedVideoSource;
 
 /// Represents a user-provided video track sourced from the local device.
 ///
@@ -65,6 +66,13 @@ public:
   /// @return A shared pointer to the newly constructed `LocalVideoTrack`.
   static std::shared_ptr<LocalVideoTrack> createLocalVideoTrack(const std::string& name,
                                                                 const std::shared_ptr<VideoSource>& source);
+
+  /// @brief Creates a local video track backed by a pre-encoded source.
+  /// @param name Human-readable name for the track.
+  /// @param source Source that produces pre-encoded access units.
+  /// @return A shared pointer to the newly constructed track.
+  static std::shared_ptr<LocalVideoTrack> createLocalVideoTrack(
+      const std::string& name, const std::shared_ptr<EncodedVideoSource>& source);
 
   /// Mutes the video track.
   ///

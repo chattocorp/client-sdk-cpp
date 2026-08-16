@@ -533,6 +533,9 @@ proto::TrackPublishOptions toProto(const TrackPublishOptions& in) {
   for (const proto::FrameMetadataFeature feature : toProto(mergedFrameMetadataFeatures(in))) {
     msg.add_frame_metadata_features(feature);
   }
+  if (in.video_encoder) {
+    msg.set_video_encoder(static_cast<proto::VideoEncoderBackend>(*in.video_encoder));
+  }
   if (in.degradation_preference) {
     msg.set_degradation_preference(static_cast<proto::DegradationPreference>(*in.degradation_preference));
   }
@@ -567,6 +570,9 @@ TrackPublishOptions fromProto(const proto::TrackPublishOptions& in) {
   }
   if (in.has_preconnect_buffer()) {
     out.preconnect_buffer = in.preconnect_buffer();
+  }
+  if (in.has_video_encoder()) {
+    out.video_encoder = static_cast<VideoEncoderBackend>(in.video_encoder());
   }
   const FrameMetadataFeatures frame_metadata_features = fromProto(in.frame_metadata_features());
   if (in.frame_metadata_features_size() > 0) {

@@ -304,6 +304,18 @@ enum class DegradationPreference {
   MaintainFramerateAndResolution = 4,
 };
 
+/// @brief Selects the encoder backend for a published video track.
+enum class VideoEncoderBackend {
+  Auto = 0,
+  Software = 1,
+  Hardware = 2,
+  Nvenc = 3,
+  Vaapi = 4,
+  VideoToolbox = 5,
+  /// Forward access units supplied by an EncodedVideoSource without encoding them again.
+  PreEncoded = 6,
+};
+
 /// Optional frame metadata features for published video tracks.
 struct FrameMetadataFeatures {
   /// Embed a user-supplied wall-clock timestamp.
@@ -351,6 +363,9 @@ struct TrackPublishOptions {
 
   /// Optional frame metadata features to enable for published video.
   std::optional<FrameMetadataFeatures> frame_metadata_features;
+
+  /// Preferred video encoder backend. Use PreEncoded with EncodedVideoSource.
+  std::optional<VideoEncoderBackend> video_encoder;
 
   /// @deprecated Use frame_metadata_features instead.
   [[deprecated("TrackPublishOptions::packet_trailer_features is deprecated; use frame_metadata_features instead")]]
