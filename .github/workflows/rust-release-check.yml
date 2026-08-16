@@ -30,7 +30,7 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-          RUST_REPO: livekit/client-sdk-rust
+          RUST_REPO: chattocorp/rust-sdks
           RUST_SHA: ${{ steps.rust_sha.outputs.sha }}
         run: |
           set -euo pipefail
