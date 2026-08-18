@@ -51,6 +51,8 @@ struct EncodedVideoFrame {
 struct EncodedVideoRateControl {
   std::uint64_t target_bitrate_bps = 0;
   double framerate_fps = 0.0;
+  /// Negotiated H.264 profile_idc, or zero for non-H.264 codecs/unknown.
+  std::uint32_t h264_profile_idc = 0;
 };
 
 /// @brief Pending feedback for an application-owned video encoder.

@@ -124,7 +124,9 @@ EncodedVideoSourceFeedback EncodedVideoSource::takeFeedback() {
   feedback.keyframe_requested = proto_feedback.keyframe_requested();
   if (proto_feedback.has_rate_control()) {
     feedback.rate_control = EncodedVideoRateControl{
-        proto_feedback.rate_control().target_bitrate_bps(), proto_feedback.rate_control().framerate_fps()};
+        proto_feedback.rate_control().target_bitrate_bps(),
+        proto_feedback.rate_control().framerate_fps(),
+        proto_feedback.rate_control().h264_profile_idc()};
   }
   return feedback;
 }
